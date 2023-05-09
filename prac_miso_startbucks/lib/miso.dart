@@ -43,7 +43,6 @@ class _MisoState extends State<Miso> {
   }
 }
 
-
 class MisoFirstPage extends StatelessWidget {
   const MisoFirstPage({
     super.key,
@@ -124,7 +123,6 @@ class MisoFirstPage extends StatelessWidget {
   }
 }
 
-
 class MisoSecondPage extends StatelessWidget {
   const MisoSecondPage({
     super.key,
@@ -134,75 +132,70 @@ class MisoSecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SizedBox(
-          width: double.infinity,
-          child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                  Text(
-                    "예약내역",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.w900,
-                    ),
+          child: SizedBox(
+        width: double.infinity,
+        child: Stack(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Text(
+                  "예약내역",
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
                   ),
-                  SizedBox(height: 64),
-                  Row(
-                    children: [
-                      Icon(Icons.error, color: misoPrimaryColor),
-                      SizedBox(width: 8),
-                      Expanded(
-                        child:FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            "예약된 서비스가 아직 없습니다. 지금 예약해보세요!!!!!!!",
-                            style: TextStyle(
-                              fontSize: 100,
-
-                            )
-                          ),
-                        )
-                      )
-                    ],
-                  ),
-                  Divider(color: Colors.grey,)
-                ],
-              ),
+                ),
+                SizedBox(height: 64),
+                Row(
+                  children: [
+                    Icon(Icons.error, color: misoPrimaryColor),
+                    SizedBox(width: 8),
+                    Expanded(
+                        child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text("예약된 서비스가 아직 없습니다. 지금 예약해보세요!!!!!!!",
+                          style: TextStyle(
+                            fontSize: 100,
+                          )),
+                    ))
+                  ],
+                ),
+                Divider(
+                  color: Colors.grey,
+                )
+              ],
             ),
-            Positioned(
+          ),
+          Positioned(
               bottom: 18,
               left: 24,
               right: 24,
               child: GestureDetector(
-                onTap: (){
-                  print("예약하기 클릭!");
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 58,
-                  color: misoPrimaryColor,
-                  alignment: Alignment.center,
-                  child: Text(
-                    "예약하기",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
+                  onTap: () {
+                    print("예약하기 클릭!");
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 58,
+                    color: misoPrimaryColor,
+                    alignment: Alignment.center,
+                    child: Text(
+                      "예약하기",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                )
-              )
-            )
-          ]),
-        )
-      ),
+                  )))
+        ]),
+      )),
     );
   }
 }
+
 /// 세 번째 페이지
 class MisoThirdPage extends StatelessWidget {
   const MisoThirdPage({Key? key}) : super(key: key);
@@ -214,9 +207,101 @@ class MisoThirdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Miso 세 번째 페이지"),
-      ),
+      backgroundColor: misoPrimaryColor,
+      body: SafeArea(
+          child: SizedBox(
+        width: double.infinity,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+                bottom: 0,
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  child: Image.network(backgroundImgUrl),
+                )),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 64),
+                RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                        style: TextStyle(
+                          fontSize: 28,
+                          height: 1.5,
+                          color: Colors.white,
+                        ),
+                        children: [
+                          TextSpan(text: "친구 추천할 때마다 \n"),
+                          TextSpan(
+                              text: "10,000원 ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              )),
+                          TextSpan(text: "할인 쿠폰 적립! "),
+                        ])),
+                SizedBox(height: 64),
+                GestureDetector(
+                    onTap: () {
+                      print("자세히 보기 클릭!");
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "자세히 보기",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          color: Colors.white,
+                        )
+                      ],
+                    ))
+              ],
+            ),
+            Positioned(
+              bottom: 42,
+              child: GestureDetector(
+                onTap: (){
+                  print("친구 추천 클릭");
+                },
+                child:Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(64),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.redeem,
+                        color: misoPrimaryColor,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        "친구 추천하기",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: misoPrimaryColor,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              )
+            )
+          ],
+        ),
+      )),
     );
   }
 }
