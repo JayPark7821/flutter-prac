@@ -65,10 +65,13 @@ class HomePage extends StatelessWidget {
                       icon: Icon(CupertinoIcons.delete),
                       onPressed: () {
                         // 삭제 버튼 클릭시
+                        bucketService.deleteBucket(index);
                       },
                     ),
                     onTap: () {
                       // 아이템 클릭시
+                      bucket.isDone = !bucket.isDone; // 완료 여부 변경
+                      bucketService.updateBucket(bucket, index);
                     },
                   );
                 },

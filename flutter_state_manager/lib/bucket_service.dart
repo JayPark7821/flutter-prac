@@ -11,4 +11,14 @@ class BucketService extends ChangeNotifier {
     bucketList.add(Bucket(job, false));
     notifyListeners();
   }
+
+  void updateBucket(Bucket bucket, int index) {
+    bucketList[index] = bucket;
+    notifyListeners();
+  }
+
+  void deleteBucket(int index) {
+    bucketList.removeAt(index);
+    notifyListeners();
+  }
 }
