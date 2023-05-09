@@ -265,40 +265,38 @@ class MisoThirdPage extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 42,
-              child: GestureDetector(
-                onTap: (){
-                  print("친구 추천 클릭");
-                },
-                child:Container(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(64),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.redeem,
-                        color: misoPrimaryColor,
+                bottom: 42,
+                child: GestureDetector(
+                    onTap: () {
+                      print("친구 추천 클릭");
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 10,
                       ),
-                      SizedBox(width: 8),
-                      Text(
-                        "친구 추천하기",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: misoPrimaryColor,
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              )
-            )
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(64),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.redeem,
+                            color: misoPrimaryColor,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            "친구 추천하기",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: misoPrimaryColor,
+                            ),
+                          )
+                        ],
+                      ),
+                    )))
           ],
         ),
       )),
@@ -313,8 +311,69 @@ class MisoFourthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("Miso 네 번째 페이지"),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 62),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "나의정보",
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              SizedBox(height: 16),
+              Text(
+                "010-0000-0000",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 32),
+              ListTile(
+                onTap: ()=> print("주소관리 클릭"),
+                contentPadding: EdgeInsets.all(0),
+                leading: Icon(Icons.home_outlined, color: Colors.black,),
+                title: Text(
+                  "주소 관리",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ),
+              ListTile(
+                onTap: ()=> print("주소관리 클릭"),
+                contentPadding: EdgeInsets.all(0),
+                leading: Icon(Icons.home_outlined, color: Colors.black,),
+                title: Text(
+                  "주소 관리",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ),
+              ListTile(
+                onTap: ()=> print("주소관리 클릭"),
+                contentPadding: EdgeInsets.all(0),
+                leading: Icon(Icons.home_outlined, color: Colors.black,),
+                title: Text(
+                  "주소 관리",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              ),
+
+
+            ],
+          ),
+        ),
       ),
     );
   }
