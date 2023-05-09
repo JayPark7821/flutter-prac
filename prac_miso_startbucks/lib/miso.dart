@@ -43,18 +43,6 @@ class _MisoState extends State<Miso> {
   }
 }
 
-class MisoSecondPage extends StatelessWidget {
-  const MisoSecondPage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("Miso 두 번째 페이지")),
-    );
-  }
-}
 
 class MisoFirstPage extends StatelessWidget {
   const MisoFirstPage({
@@ -136,6 +124,85 @@ class MisoFirstPage extends StatelessWidget {
   }
 }
 
+
+class MisoSecondPage extends StatelessWidget {
+  const MisoSecondPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          width: double.infinity,
+          child: Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                  Text(
+                    "예약내역",
+                    style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height: 64),
+                  Row(
+                    children: [
+                      Icon(Icons.error, color: misoPrimaryColor),
+                      SizedBox(width: 8),
+                      Expanded(
+                        child:FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "예약된 서비스가 아직 없습니다. 지금 예약해보세요!!!!!!!",
+                            style: TextStyle(
+                              fontSize: 100,
+
+                            )
+                          ),
+                        )
+                      )
+                    ],
+                  ),
+                  Divider(color: Colors.grey,)
+                ],
+              ),
+            ),
+            Positioned(
+              bottom: 18,
+              left: 24,
+              right: 24,
+              child: GestureDetector(
+                onTap: (){
+                  print("예약하기 클릭!");
+                },
+                child: Container(
+                  width: double.infinity,
+                  height: 58,
+                  color: misoPrimaryColor,
+                  alignment: Alignment.center,
+                  child: Text(
+                    "예약하기",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              )
+            )
+          ]),
+        )
+      ),
+    );
+  }
+}
 /// 세 번째 페이지
 class MisoThirdPage extends StatelessWidget {
   const MisoThirdPage({Key? key}) : super(key: key);
