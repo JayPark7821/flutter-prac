@@ -6,4 +6,9 @@ class BucketService extends ChangeNotifier {
   List<Bucket> bucketList = [
     Bucket("dart 공부하기", false),
   ];
+
+  void createBucket(String job) {
+    bucketList.add(Bucket(job, false));
+    notifyListeners();
+  }
 }
