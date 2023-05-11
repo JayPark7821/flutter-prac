@@ -1,15 +1,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:image_search/domain/repository/photo_api_repository.dart';
+import 'package:image_search/domain/use_case/get_photos_use_case.dart';
 import 'package:image_search/presentation/home/home_ui_event.dart';
 
-import '../../data/data_source/result.dart';
-import '../../domain/photo.dart';
 import 'home_state.dart';
 
 class HomeViewModel with ChangeNotifier {
-  final PhotoApiRepository repository;
+  final GetPhotosUseCase getPhotosUseCase;
+
+  HomeViewModel(this.getPhotosUseCase);
+
   HomeState _state = HomeState([], false);
 
   HomeState get state => _state;
@@ -18,23 +19,17 @@ class HomeViewModel with ChangeNotifier {
 
   Stream<HomeUiEvent> get eventStream => _eventController.stream;
 
-  HomeViewModel(this.repository);
-
   Future<void> fetch(String query) async {
     _state = state.copyWith(isLoading: true);
     notifyListeners();
 
-    final Result<List<Photo>> result = await repository.fetch(query);
+    (await getPhotosUseCase(query)).when(success: (photos) {
+      _state = state.copyWith(photos: photos);
+      notifyListeners();
+    }, error: (message) {
+      _eventController.add(HomeUiEvent.showSnackBar(message));
+    });
 
-    result.when(
-      success: (photos) {
-        _state = state.copyWith(photos: photos);
-        notifyListeners();
-      },
-      error: (message) {
-        _eventController.add(HomeUiEvent.showSnackBar(message));
-      },
-    );
     _state = state.copyWith(isLoading: false);
     notifyListeners();
   }
