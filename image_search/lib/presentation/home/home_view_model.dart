@@ -1,22 +1,41 @@
 import 'dart:async';
-import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:image_search/domain/repository/photo_api_repository.dart';
+import 'package:image_search/presentation/home/home_ui_event.dart';
 
+import '../../data/data_source/result.dart';
 import '../../domain/photo.dart';
+import 'home_state.dart';
 
 class HomeViewModel with ChangeNotifier {
   final PhotoApiRepository repository;
-  List<Photo> _photos = [];
+  HomeState _state = HomeState([], false);
 
-  UnmodifiableListView<Photo> get photos => UnmodifiableListView(_photos);
+  HomeState get state => _state;
+
+  final _eventController = StreamController<HomeUiEvent>();
+
+  Stream<HomeUiEvent> get eventStream => _eventController.stream;
 
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
-    final result = await repository.fetch(query);
-    _photos = result;
+    _state = state.copy(isLoading: true);
+    notifyListeners();
+
+    final Result<List<Photo>> result = await repository.fetch(query);
+
+    result.when(
+      success: (photos) {
+        _state = state.copy(photos: photos);
+        notifyListeners();
+      },
+      error: (message) {
+        _eventController.add(HomeUiEvent.showSnackBar(message));
+      },
+    );
+    _state = state.copy(isLoading: false);
     notifyListeners();
   }
 }
