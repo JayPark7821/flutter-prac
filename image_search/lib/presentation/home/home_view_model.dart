@@ -21,21 +21,21 @@ class HomeViewModel with ChangeNotifier {
   HomeViewModel(this.repository);
 
   Future<void> fetch(String query) async {
-    _state = state.copy(isLoading: true);
+    _state = state.copyWith(isLoading: true);
     notifyListeners();
 
     final Result<List<Photo>> result = await repository.fetch(query);
 
     result.when(
       success: (photos) {
-        _state = state.copy(photos: photos);
+        _state = state.copyWith(photos: photos);
         notifyListeners();
       },
       error: (message) {
         _eventController.add(HomeUiEvent.showSnackBar(message));
       },
     );
-    _state = state.copy(isLoading: false);
+    _state = state.copyWith(isLoading: false);
     notifyListeners();
   }
 }
