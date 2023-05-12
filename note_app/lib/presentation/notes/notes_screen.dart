@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/presentation/add_edit_note/add_edit_note_screen.dart';
-import 'package:note_app/ui/colors.dart';
+import 'package:note_app/presentation/notes/notes_event.dart';
+import 'package:note_app/presentation/notes/notes_view_model.dart';
+import 'package:provider/provider.dart';
 
-import '../../domain/model/note.dart';
 import 'components/note_item.dart';
 
 class NotesScreen extends StatelessWidget {
@@ -10,6 +11,9 @@ class NotesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<NoteViewModel>();
+    final state = viewModel.state;
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -25,35 +29,27 @@ class NotesScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          bool? isSaved = await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => const AddEditNoteScreen()));
+          if (isSaved != null && isSaved) {
+            viewModel.onEvent(const NotesEvent.loadNotes());
+          }
         },
         child: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
-          children: [
-            NoteItem(
-              note: Note(
-                title: 'Title',
-                content: 'Content',
-                color: wisteria.value,
-                timestamp: 1,
-              ),
-            ),
-            NoteItem(
-              note: Note(
-                title: 'Title',
-                content: 'Content',
-                color: skyBlue.value,
-                timestamp: 1,
-              ),
-            ),
-          ],
+          children: state.notes
+              .map(
+                (note) => NoteItem(
+                  note: note,
+                ),
+              )
+              .toList(),
         ),
       ),
     );
