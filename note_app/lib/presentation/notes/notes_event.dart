@@ -5,7 +5,7 @@ import '../../domain/model/note.dart';
 part 'notes_event.freezed.dart';
 
 @freezed
-abstract class NotesEvent<T> with _$NotesEvent<T> {
+class NotesEvent<T> with _$NotesEvent<T> {
   const factory NotesEvent.loadNotes() = LoadNotes;
 
   const factory NotesEvent.deleteNote(Note note) = DeleteNote;
