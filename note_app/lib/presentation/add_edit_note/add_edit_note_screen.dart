@@ -34,11 +34,21 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.note != null) {
+      _titleController.text = widget.note!.title;
+      _contentController.text = widget.note!.content;
+    }
     Future.microtask(() {
       final viewModel = context.read<AddEditNoteViewModel>();
       _streamSubscription = viewModel.eventStream.listen((event) {
         event.when(saveNote: () {
           Navigator.pop(context, true);
+        }, showSnackBar: (String message) {
+          final snackBar = SnackBar(
+            behavior: SnackBarBehavior.floating,
+            content: Text(message),
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         });
       });
     });
@@ -110,14 +120,6 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (_titleController.text.isEmpty ||
-              _contentController.text.isEmpty) {
-            const snackBar = SnackBar(
-              behavior: SnackBarBehavior.floating,
-              content: Text('title or content is empty'),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
           viewModel.onEvent(AddEditNoteEvent.saveNote(
             widget.note != null ? widget.note!.id : null,
             _titleController.text,
