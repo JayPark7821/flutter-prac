@@ -49,7 +49,9 @@ class NoteItem extends StatelessWidget {
             bottom: 8,
             right: 8,
             child: GestureDetector(
-              onTap: onDeleteTap?.call(),
+              onTap: () {
+                onDeleteTap?.call();
+              },
               child: const Icon(
                 Icons.delete,
                 color: darkGray,
