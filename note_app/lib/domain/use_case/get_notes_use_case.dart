@@ -8,6 +8,8 @@ class GetNotesUseCase {
   GetNotesUseCase(this.noteRepository);
 
   Future<List<Note>> call() async {
-    return await noteRepository.getNotes();
+    var notes = await noteRepository.getNotes();
+    notes.sort((a, b) => -a.timestamp.compareTo(b.timestamp));
+    return notes;
   }
 }
