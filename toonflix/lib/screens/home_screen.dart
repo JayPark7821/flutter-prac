@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toonflix/services/api_service.dart';
+import 'package:toonflix/widgets/webtoon_widget.dart';
 
 import '../models/webtoon_model.dart';
 
@@ -44,45 +45,11 @@ class HomeScreen extends StatelessWidget {
 
   ListView makeList(AsyncSnapshot<List<WebtoonModel>> snapshot) {
     return ListView.separated(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       scrollDirection: Axis.horizontal,
       itemCount: snapshot.data!.length,
       itemBuilder: (BuildContext context, int index) {
-        final webtoon = snapshot.data![index];
-        return Column(
-          children: [
-            Container(
-              clipBehavior: Clip.hardEdge,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.5),
-                    offset: Offset(10, 10),
-                    blurRadius: 15,
-                  ),
-                ],
-              ),
-              width: 250,
-              child: Image.network(
-                webtoon.thumb,
-                headers: const {
-                  "User-Agent":
-                      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
-                },
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              webtoon.title,
-              style: const TextStyle(
-                fontSize: 22,
-              ),
-            ),
-          ],
-        );
+        return WebtoonWidget(webtoonModel: snapshot.data![index]);
       },
       separatorBuilder: (BuildContext context, int index) {
         return const SizedBox(
