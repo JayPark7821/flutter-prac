@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
 import 'package:toonflix/services/api_service.dart';
@@ -18,12 +19,43 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> webtoonEpisodes;
+  late SharedPreferences pref;
+  bool isLiked = false;
+
+  Future initPrefs() async {
+    pref = await SharedPreferences.getInstance();
+    final likedToons = pref.getStringList('likedToons');
+    if (likedToons != null) {
+      if (likedToons.contains(widget.webtoonModel.id) == true) {
+        isLiked = true;
+        setState(() {});
+      }
+    } else {
+      await pref.setStringList('likedToons', []);
+    }
+  }
+
+  Future<void> likeToon() async {
+    final likedToons = pref.getStringList('likedToons');
+    if (likedToons != null) {
+      if (isLiked) {
+        likedToons.remove(widget.webtoonModel.id);
+      } else {
+        likedToons.add(widget.webtoonModel.id);
+      }
+      await pref.setStringList('likedToons', likedToons);
+      setState(() {
+        isLiked = !isLiked;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     webtoon = ApiService.getToonById(widget.webtoonModel.id);
     webtoonEpisodes = ApiService.getLatestEpisodeById(widget.webtoonModel.id);
+    initPrefs();
   }
 
   @override
@@ -40,6 +72,18 @@ class _DetailScreenState extends State<DetailScreen> {
         foregroundColor: Colors.green,
         backgroundColor: Colors.white,
         elevation: 2,
+        actions: [
+          IconButton(
+            onPressed: likeToon,
+            icon: isLiked
+                ? const Icon(
+                    Icons.favorite,
+                  )
+                : const Icon(
+                    Icons.favorite_outline,
+                  ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
