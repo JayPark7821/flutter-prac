@@ -1,10 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/models/webtoon_model.dart';
+import 'package:toonflix/services/api_service.dart';
 
-class DetailScreen extends StatelessWidget {
+import '../models/webtoon_detail_model.dart';
+
+class DetailScreen extends StatefulWidget {
   final WebtoonModel webtoonModel;
 
   const DetailScreen({Key? key, required this.webtoonModel}) : super(key: key);
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  late Future<WebtoonDetailModel> webtoon;
+  late Future<List<WebtoonEpisodeModel>> webtoonEpisodes;
+
+  @override
+  void initState() {
+    super.initState();
+    webtoon = ApiService.getToonById(widget.webtoonModel.id);
+    webtoonEpisodes = ApiService.getLatestEpisodeById(widget.webtoonModel.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +31,7 @@ class DetailScreen extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(
-          webtoonModel.title,
+          widget.webtoonModel.title,
           style: const TextStyle(
             fontSize: 24,
           ),
@@ -30,7 +49,7 @@ class DetailScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Hero(
-                tag: webtoonModel.id,
+                tag: widget.webtoonModel.id,
                 child: Container(
                   clipBehavior: Clip.hardEdge,
                   decoration: BoxDecoration(
@@ -45,7 +64,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   width: 250,
                   child: Image.network(
-                    webtoonModel.thumb,
+                    widget.webtoonModel.thumb,
                     headers: const {
                       "User-Agent":
                           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36",
