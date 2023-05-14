@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-import 'company_listring_entity.dart';
+import 'company_listing_entity.dart';
 
 class StockRepository {
   static const companyListing = 'companyListing';
