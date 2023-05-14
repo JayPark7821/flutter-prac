@@ -3,12 +3,14 @@ import 'package:stock_app/domain/model/company_listing.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
 import 'package:stock_app/util/result.dart';
 
+import '../csv/company_listings_parser.dart';
 import '../source/local/stock_dao.dart';
 import '../source/remote/stock_api.dart';
 
 class StockRepositoryImpl implements StockRepository {
   final StockApi _api;
   final StockDao _dao;
+  final _parser = CompanyListingsParser();
 
   StockRepositoryImpl(this._api, this._dao);
 
@@ -28,8 +30,15 @@ class StockRepositoryImpl implements StockRepository {
 
     // 리모트
     try {
-      final remoteListings = await _api.getListings();
-      return Result.success([]);
+      final response = await _api.getListings();
+      final remoteListings = await _parser.parse(response.body);
+
+      await _dao.clearCompanyListrings();
+
+      await _dao.insertCompanyListrings(
+          remoteListings.map((e) => e.toCompanyListingEntity()).toList());
+
+      return Result.success(remoteListings);
     } catch (e) {
       return Result.error(Exception("데이터 로드 실패"));
     }
