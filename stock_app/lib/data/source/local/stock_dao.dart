@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 import 'company_listing_entity.dart';
 
-class StockRepository {
+class StockDao {
   static const companyListing = 'companyListing';
 
   final box = Hive.box('stock.db');
