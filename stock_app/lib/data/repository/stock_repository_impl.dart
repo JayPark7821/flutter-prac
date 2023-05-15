@@ -18,7 +18,7 @@ class StockRepositoryImpl implements StockRepository {
   Future<Result<List<CompanyListing>>> getCompanyListings(
       bool fetchFromRemote, String query) async {
     // 캐시에서 찾는다
-    final localListings = await _dao.searchCompanyListring(query);
+    final localListings = await _dao.searchCompanyListing(query);
     // 없다면 리모트에서 가져옴
     final isDbEmpty = localListings.isEmpty && query.isEmpty;
     final shouldJustLoadFromCache = !isDbEmpty && !fetchFromRemote;
@@ -33,9 +33,9 @@ class StockRepositoryImpl implements StockRepository {
       final response = await _api.getListings();
       final remoteListings = await _parser.parse(response.body);
 
-      await _dao.clearCompanyListrings();
+      await _dao.clearCompanyListings();
 
-      await _dao.insertCompanyListrings(
+      await _dao.insertCompanyListings(
           remoteListings.map((e) => e.toCompanyListingEntity()).toList());
 
       return Result.success(remoteListings);
