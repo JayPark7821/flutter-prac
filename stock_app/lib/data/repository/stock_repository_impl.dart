@@ -1,4 +1,5 @@
 import 'package:stock_app/data/mapper/company_mapper.dart';
+import 'package:stock_app/domain/model/company_info.dart';
 import 'package:stock_app/domain/model/company_listing.dart';
 import 'package:stock_app/domain/repository/stock_repository.dart';
 import 'package:stock_app/util/result.dart';
@@ -41,6 +42,16 @@ class StockRepositoryImpl implements StockRepository {
       return Result.success(remoteListings);
     } catch (e) {
       return Result.error(Exception("데이터 로드 실패"));
+    }
+  }
+
+  @override
+  Future<Result<CompanyInfo>> getCompanyInfo(String symbol) async {
+    try {
+      final dto = await _api.getCompanyInfo(symbol: symbol);
+      return Result.success(dto.toCompanyInfo());
+    } catch (e) {
+      return Result.error(Exception("회사 정보 로드 실패 : ${e.toString()}"));
     }
   }
 }

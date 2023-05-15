@@ -1,4 +1,5 @@
 import '../../util/result.dart';
+import '../model/company_info.dart';
 import '../model/company_listing.dart';
 
 abstract class StockRepository {
@@ -6,4 +7,6 @@ abstract class StockRepository {
     bool fetchFromRemote,
     String query,
   );
+
+  Future<Result<CompanyInfo>> getCompanyInfo(String symbol);
 }
