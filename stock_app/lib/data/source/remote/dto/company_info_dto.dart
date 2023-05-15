@@ -7,8 +7,8 @@ part 'company_info_dto.g.dart';
 class CompanyInfoDto with _$CompanyInfoDto {
   factory CompanyInfoDto({
     @JsonKey(name: 'Symbol') String? symbol,
-    @JsonKey(name: 'Description') String? name,
-    @JsonKey(name: 'Name') String? description,
+    @JsonKey(name: 'Name') String? name,
+    @JsonKey(name: 'Description') String? description,
     @JsonKey(name: 'Country') String? country,
     @JsonKey(name: 'Industry') String? industry,
   }) = _CompanyInfoDto;

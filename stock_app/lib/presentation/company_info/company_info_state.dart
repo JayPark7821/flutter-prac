@@ -10,6 +10,7 @@ class CompanyInfoState with _$CompanyInfoState {
   factory CompanyInfoState({
     CompanyInfo? companyInfo,
     @Default(false) bool isLoading,
+    String? errorMsg,
   }) = _CompanyInfoState;
 
   factory CompanyInfoState.fromJson(Map<String, dynamic> json) =>
