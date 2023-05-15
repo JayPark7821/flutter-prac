@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:food_delivery/common/const/colors.dart';
 import 'package:food_delivery/common/const/data.dart';
 import 'package:food_delivery/common/layout/default_layout.dart';
@@ -25,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-    final storage = FlutterSecureStorage();
     const emulatorIp = '10.0.2.2:3000';
     const simulatorIp = '127.0.0.1:3000';
 
