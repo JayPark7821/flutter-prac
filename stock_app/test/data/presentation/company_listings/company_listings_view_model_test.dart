@@ -1,0 +1,17 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:stock_app/data/repository/stock_repository_impl.dart';
+import 'package:stock_app/data/source/local/stock_dao.dart';
+import 'package:stock_app/data/source/remote/stock_api.dart';
+import 'package:stock_app/presentation/company_listings/company_listrings_view_model.dart';
+
+void main() {
+  test('company listings view model test', () async {
+    final _api = StockApi();
+    final _dao = StockDao();
+    final viewModel = CompanyListingsViewModel(StockRepositoryImpl(_api, _dao));
+
+    await Future.delayed(const Duration(seconds: 3));
+
+    expect(viewModel.state.companies.isNotEmpty, true);
+  });
+}
