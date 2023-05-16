@@ -10,16 +10,34 @@ class RootTab extends StatefulWidget {
   State<RootTab> createState() => _RootTabState();
 }
 
-class _RootTabState extends State<RootTab> {
+class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
+  late TabController controller;
+
   int index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TabController(length: 4, vsync: this);
+    controller.addListener(tabListener);
+  }
+
+  @override
+  void dispose() {
+    controller.removeListener(tabListener);
+    super.dispose();
+  }
+
+  void tabListener() {
+    setState(() {
+      index = controller.index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: "딜리버리",
-      child: Center(
-        child: Text("RootTab"),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,
@@ -27,9 +45,7 @@ class _RootTabState extends State<RootTab> {
         unselectedFontSize: 10,
         type: BottomNavigationBarType.shifting,
         onTap: (index) {
-          setState(() {
-            this.index = index;
-          });
+          controller.animateTo(index);
         },
         currentIndex: index,
         items: const [
@@ -49,6 +65,16 @@ class _RootTabState extends State<RootTab> {
             icon: Icon(Icons.person_outline),
             label: "프로필",
           ),
+        ],
+      ),
+      child: TabBarView(
+        controller: controller,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          Center(child: Text("홈")),
+          Center(child: Text("음식")),
+          Center(child: Text("주문")),
+          Center(child: Text("프로필")),
         ],
       ),
     );
