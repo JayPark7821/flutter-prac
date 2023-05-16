@@ -1,5 +1,7 @@
 import 'package:food_delivery/restaurant/model/restaurant_model.dart';
 
+import '../../common/const/data.dart';
+
 class RestaurantDetailModel extends RestaurantModel {
   final String detail;
   final List<RestaurantProductModel> products;
@@ -62,7 +64,7 @@ class RestaurantProductModel {
     return RestaurantProductModel(
       id: json['id'],
       name: json['name'],
-      imgUrl: json['imgUrl'],
+      imgUrl: 'http://$ip${json['imgUrl']}',
       detail: json['detail'],
       price: json['price'],
     );
