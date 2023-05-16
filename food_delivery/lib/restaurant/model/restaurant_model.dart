@@ -1,4 +1,3 @@
-import 'package:food_delivery/common/utils/data_utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'restaurant_model.g.dart';

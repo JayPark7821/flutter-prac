@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery/common/dio/dio.dart';
 import 'package:food_delivery/restaurant/model/restaurant_model.dart';
+import 'package:food_delivery/restaurant/repository/restaurant_repository.dart';
 import 'package:food_delivery/restaurant/view/restaurant_detail_screen.dart';
 
 import '../../common/const/data.dart';
@@ -9,19 +11,15 @@ import '../component/restaurant_card.dart';
 class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
 
-  Future<List> pagenateRestaurant() async {
+  Future<List<RestaurantModel>> paginateRestaurant() async {
     final dio = Dio();
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
-
-    final response = await dio.get(
-      'http://$ip/restaurant',
-      options: Options(
-        headers: {
-          'authorization': 'Bearer $accessToken',
-        },
-      ),
+    dio.interceptors.add(
+      CustomInterceptor(storage: storage),
     );
-    return response.data['data'];
+    final response =
+        await RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant')
+            .paginate();
+    return response.data;
   }
 
   @override
@@ -33,7 +31,7 @@ class RestaurantScreen extends StatelessWidget {
             horizontal: 16.0,
           ),
           child: FutureBuilder(
-            future: pagenateRestaurant(),
+            future: paginateRestaurant(),
             builder: (context, AsyncSnapshot<List> snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
@@ -42,9 +40,7 @@ class RestaurantScreen extends StatelessWidget {
               }
               return ListView.separated(
                 itemBuilder: (_, index) {
-                  final item = snapshot.data![index];
-                  final pItem = RestaurantModel.fromJson(item);
-
+                  final pItem = snapshot.data![index];
                   return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(

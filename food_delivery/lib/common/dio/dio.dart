@@ -27,6 +27,7 @@ class CustomInterceptor extends Interceptor {
     }
     final isStatus401 = err.response?.statusCode == 401;
     final isPathRefresh = err.requestOptions.path == '/auth/token';
+
     if (isStatus401 && !isPathRefresh) {
       final dio = Dio();
       try {
@@ -38,6 +39,7 @@ class CustomInterceptor extends Interceptor {
             },
           ),
         );
+
         final accessToken = response.data['accessToken'];
         final options = err.requestOptions;
         options.headers.addAll({'authorization': 'Bearer $accessToken'});
@@ -49,5 +51,11 @@ class CustomInterceptor extends Interceptor {
       }
     }
     return super.onError(err, handler);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
+    print(response.realUri);
+    return super.onResponse(response, handler);
   }
 }
