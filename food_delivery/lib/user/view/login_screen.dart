@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -24,10 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-    const emulatorIp = '10.0.2.2:3000';
-    const simulatorIp = '127.0.0.1:3000';
-
-    final ip = Platform.isIOS ? simulatorIp : emulatorIp;
 
     return DefaultLayout(
       child: SingleChildScrollView(
@@ -87,17 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8.0),
                 TextButton(
-                    onPressed: () async {
-                      const rawString = 'test@codefactory.ai:testtest';
-                      final token = base64.encode(utf8.encode(rawString));
-                      final response = await dio.post(
-                        'http://$ip/auth/login',
-                        options: Options(
-                          headers: {'authorization': 'Basic $token'},
-                        ),
-                      );
-                      print(response.data);
-                    },
+                    onPressed: () async {},
                     child: Text('회원가입', style: TextStyle(color: Colors.black)))
               ],
             ),

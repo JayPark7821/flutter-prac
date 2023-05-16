@@ -35,7 +35,7 @@ class RestaurantCard extends StatelessWidget {
           children: [
             Text(
               name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.w500,
               ),
