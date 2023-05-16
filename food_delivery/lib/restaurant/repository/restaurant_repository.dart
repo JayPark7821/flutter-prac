@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart';
+import 'package:dio/dio.dart' hide Headers;
 import 'package:food_delivery/restaurant/model/restaurant_detail_model.dart';
 import 'package:retrofit/http.dart';
 
@@ -14,6 +14,7 @@ abstract class RestaurantRepository {
   // pagenate();
 
   @GET("/{id}")
+  @Headers({'accessToken': 'true'})
   Future<RestaurantDetailModel> getRestaurantDetail({
     @Path('id') required String id,
   });
