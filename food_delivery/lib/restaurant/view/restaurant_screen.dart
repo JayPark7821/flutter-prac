@@ -1,23 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_delivery/common/dio/dio.dart';
+import 'package:food_delivery/common/model/cursor_pagination_model.dart';
 import 'package:food_delivery/restaurant/model/restaurant_model.dart';
 import 'package:food_delivery/restaurant/repository/restaurant_repository.dart';
 import 'package:food_delivery/restaurant/view/restaurant_detail_screen.dart';
 
-import '../../common/const/data.dart';
 import '../component/restaurant_card.dart';
 
 class RestaurantScreen extends ConsumerWidget {
   const RestaurantScreen({Key? key}) : super(key: key);
-
-  Future<List<RestaurantModel>> paginateRestaurant(WidgetRef ref) async {
-    final dio = ref.watch(dioProvider);
-    final response =
-        await RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant')
-            .paginate();
-    return response.data;
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,9 +18,11 @@ class RestaurantScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
           ),
-          child: FutureBuilder(
-            future: paginateRestaurant(ref),
-            builder: (context, AsyncSnapshot<List> snapshot) {
+          child: FutureBuilder<CursorPaginationModel<RestaurantModel>>(
+            future: ref.watch(restaurantRepositoryProvider).paginate(),
+            builder: (context,
+                AsyncSnapshot<CursorPaginationModel<RestaurantModel>>
+                    snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -37,7 +30,7 @@ class RestaurantScreen extends ConsumerWidget {
               }
               return ListView.separated(
                 itemBuilder: (_, index) {
-                  final pItem = snapshot.data![index];
+                  final pItem = snapshot.data!.data[index];
                   return GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
@@ -55,7 +48,7 @@ class RestaurantScreen extends ConsumerWidget {
                     height: 16,
                   );
                 },
-                itemCount: snapshot.data!.length,
+                itemCount: snapshot.data!.data.length,
               );
             },
           ),
