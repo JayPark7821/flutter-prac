@@ -25,15 +25,23 @@ class CodeGenerationScreen extends ConsumerWidget {
           Row(
             children: [
               ElevatedButton(
-                  onPressed: () {
-                    ref.read(gStateNotifierProvider.notifier).increment();
-                  },
-                  child: Text('inc')),
+                onPressed: () {
+                  ref.read(gStateNotifierProvider.notifier).increment();
+                },
+                child: Text('inc'),
+              ),
               ElevatedButton(
-                  onPressed: () {
-                    ref.read(gStateNotifierProvider.notifier).decrement();
-                  },
-                  child: Text('dec')),
+                onPressed: () {
+                  ref.read(gStateNotifierProvider.notifier).decrement();
+                },
+                child: Text('dec'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  ref.invalidate(gStateNotifierProvider);
+                },
+                child: Text('invalidate'),
+              ),
             ],
           )
         ],
