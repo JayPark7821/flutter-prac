@@ -24,91 +24,91 @@ class HomeScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => StateProviderScreen(),
+                  builder: (_) => const StateProviderScreen(),
                 ),
               );
             },
-            child: Text('StateProviderScreen'),
+            child: const Text('StateProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => StateNotifierProviderScreen(),
+                  builder: (_) => const StateNotifierProviderScreen(),
                 ),
               );
             },
-            child: Text('StateNotifierProviderScreen'),
+            child: const Text('StateNotifierProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => FutureProviderScreen(),
+                  builder: (_) => const FutureProviderScreen(),
                 ),
               );
             },
-            child: Text('FutureProviderScreen'),
+            child: const Text('FutureProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => StreamProviderScreen(),
+                  builder: (_) => const StreamProviderScreen(),
                 ),
               );
             },
-            child: Text('StreamProviderScreen'),
+            child: const Text('StreamProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => FamilyModifierScreen(),
+                  builder: (_) => const FamilyModifierScreen(),
                 ),
               );
             },
-            child: Text('FamilyModifierScreen'),
+            child: const Text('FamilyModifierScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => AutoDisposeModifierScreen(),
+                  builder: (_) => const AutoDisposeModifierScreen(),
                 ),
               );
             },
-            child: Text('AutoDisposeModifierScreen'),
+            child: const Text('AutoDisposeModifierScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => ListenProviderScreen(),
+                  builder: (_) => const ListenProviderScreen(),
                 ),
               );
             },
-            child: Text('ListenProviderScreen'),
+            child: const Text('ListenProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => SelectProviderScreen(),
+                  builder: (_) => const SelectProviderScreen(),
                 ),
               );
             },
-            child: Text('SelectProviderScreen'),
+            child: const Text('SelectProviderScreen'),
           ),
           ElevatedButton(
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => ProviderScreen(),
+                  builder: (_) => const ProviderScreen(),
                 ),
               );
             },
-            child: Text('ProviderScreen'),
+            child: const Text('ProviderScreen'),
           ),
         ],
       ),
