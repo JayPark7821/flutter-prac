@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/restaurant/model/restaurant_detail_model.dart';
 import 'package:food_delivery/restaurant/provider/restaurant_provider.dart';
+import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
 import '../../product/component/product_card.dart';
@@ -30,7 +31,7 @@ class _RestaurantDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     if (state == null) {
-      return DefaultLayout(
+      return const DefaultLayout(
         child: Center(
           child: CircularProgressIndicator(),
         ),
@@ -42,10 +43,32 @@ class _RestaurantDetailScreenState
       child: CustomScrollView(
         slivers: [
           renderTop(model: state),
+          if (state is! RestaurantDetailModel) renderLoading(),
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(products: state.products),
         ],
+      ),
+    );
+  }
+
+  SliverPadding renderLoading() {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+      sliver: SliverList(
+        delegate: SliverChildListDelegate(
+          List.generate(
+              3,
+              (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 32.0),
+                    child: SkeletonParagraph(
+                      style: const SkeletonParagraphStyle(
+                        lines: 5,
+                        padding: EdgeInsets.zero,
+                      ),
+                    ),
+                  )),
+        ),
       ),
     );
   }
