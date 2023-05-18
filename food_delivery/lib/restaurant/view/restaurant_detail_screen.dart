@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/rating/component/rating_card.dart';
 import 'package:food_delivery/restaurant/model/restaurant_detail_model.dart';
 import 'package:food_delivery/restaurant/provider/restaurant_provider.dart';
+import 'package:food_delivery/restaurant/provider/restaurant_rating_provider.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -31,6 +32,9 @@ class _RestaurantDetailScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
+    final ratingState = ref.watch(restaurantRatingProvider(widget.id));
+    print(ratingState);
+
     if (state == null) {
       return const DefaultLayout(
         child: Center(
@@ -56,7 +60,7 @@ class _RestaurantDetailScreenState
                 images: [],
                 rating: 3,
                 email: 'test@email.com',
-                content: '맛있어요!!!!!',
+                content: '맛있어요!!!!! ',
               ),
             ),
           )
