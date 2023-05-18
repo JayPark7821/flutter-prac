@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:food_delivery/rating/component/rating_card.dart';
 import 'package:food_delivery/restaurant/model/restaurant_detail_model.dart';
 import 'package:food_delivery/restaurant/provider/restaurant_provider.dart';
 import 'package:skeletons/skeletons.dart';
@@ -47,6 +48,18 @@ class _RestaurantDetailScreenState
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(products: state.products),
+          SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            sliver: const SliverToBoxAdapter(
+              child: RatingCard(
+                avataImage: AssetImage('asset/img/logo/codefactory_logo.png'),
+                images: [],
+                rating: 3,
+                email: 'test@email.com',
+                content: '맛있어요!!!!!',
+              ),
+            ),
+          )
         ],
       ),
     );
@@ -93,7 +106,7 @@ class _RestaurantDetailScreenState
               child: ProductCard.fromModel(model: products[index]),
             );
           },
-          childCount: 10,
+          childCount: products.length,
         ),
       ),
     );
