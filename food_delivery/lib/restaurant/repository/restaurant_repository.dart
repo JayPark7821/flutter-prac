@@ -7,6 +7,7 @@ import 'package:food_delivery/restaurant/model/restaurant_model.dart';
 import 'package:retrofit/http.dart';
 
 import '../../common/const/data.dart';
+import '../../common/model/pagination_params.dart';
 
 part 'restaurant_repository.g.dart';
 
@@ -25,7 +26,9 @@ abstract class RestaurantRepository {
 
   @GET('/')
   @Headers({'accessToken': 'true'})
-  Future<CursorPaginationModel<RestaurantModel>> paginate();
+  Future<CursorPaginationModel<RestaurantModel>> paginate({
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
+  });
 
   @GET("/{id}")
   @Headers({'accessToken': 'true'})
