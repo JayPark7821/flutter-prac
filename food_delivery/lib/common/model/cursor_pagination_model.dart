@@ -25,8 +25,10 @@ class CursorPaginationModel<T> extends CursorPaginationBase {
     CursorPaginationMeta? meta,
     List<T>? data,
   }) {
-    return CursorPaginationModel(
-        meta: meta ?? this.meta, data: data ?? this.data);
+    return CursorPaginationModel<T>(
+      meta: meta ?? this.meta,
+      data: data ?? this.data,
+    );
   }
 
   factory CursorPaginationModel.fromJson(

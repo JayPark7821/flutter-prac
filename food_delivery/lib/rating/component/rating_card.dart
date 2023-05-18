@@ -2,6 +2,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:food_delivery/common/const/colors.dart';
 
+import '../model/rating_model.dart';
+
 class RatingCard extends StatelessWidget {
   final ImageProvider avataImage;
   final List<Image> images;
@@ -17,6 +19,18 @@ class RatingCard extends StatelessWidget {
     required this.email,
     required this.content,
   }) : super(key: key);
+
+  factory RatingCard.fromModel({
+    required RatingModel model,
+  }) {
+    return RatingCard(
+      avataImage: NetworkImage(model.user.imageUrl),
+      images: model.imgUrls.map((e) => Image.network(e)).toList(),
+      rating: model.rating,
+      email: model.user.username,
+      content: model.content,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +48,13 @@ class RatingCard extends StatelessWidget {
           content: content,
         ),
         if (images.length > 0)
-          SizedBox(
-            height: 100,
-            child: _Images(
-              images: images,
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: SizedBox(
+              height: 100,
+              child: _Images(
+                images: images,
+              ),
             ),
           ),
       ],
