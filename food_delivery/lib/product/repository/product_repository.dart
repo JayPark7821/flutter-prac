@@ -26,5 +26,6 @@ abstract class ProductRepository
   @Headers({'accessToken': 'true'})
   @override
   Future<CursorPaginationModel<ProductModel>> paginate(
-      {PaginationParams? paginationParams = const PaginationParams()});
+      {@Queries()
+          PaginationParams? paginationParams = const PaginationParams()});
 }

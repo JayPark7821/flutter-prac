@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/common/model/cursor_pagination_model.dart';
 import 'package:food_delivery/common/provider/pagination_provider.dart';
@@ -12,7 +13,7 @@ final restaurantDetailProvider =
   if (state is! CursorPaginationModel) {
     return null;
   }
-  return state.data.firstWhere((element) => element.id == id);
+  return state.data.firstWhereOrNull((element) => element.id == id);
 });
 
 final restaurantProvider =
@@ -39,10 +40,19 @@ class RestaurantStateNotifier
     final pState = state as CursorPaginationModel;
     final response = await repository.getRestaurantDetail(id: id);
 
-    state = pState.copyWith(
-      data: pState.data
-          .map<RestaurantModel>((e) => e.id == id ? response : e)
-          .toList(),
-    );
+    if (pState.data.where((element) => element.id == id).isEmpty) {
+      state = pState.copyWith(
+        data: <RestaurantModel>[
+          ...pState.data,
+          response,
+        ],
+      );
+    } else {
+      state = pState.copyWith(
+        data: pState.data
+            .map<RestaurantModel>((e) => e.id == id ? response : e)
+            .toList(),
+      );
+    }
   }
 }

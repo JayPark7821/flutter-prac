@@ -58,7 +58,7 @@ class _RestaurantDetailScreenState
     }
 
     return DefaultLayout(
-      title: '떡볶이',
+      title: state.name,
       child: CustomScrollView(
         controller: controller,
         slivers: [
