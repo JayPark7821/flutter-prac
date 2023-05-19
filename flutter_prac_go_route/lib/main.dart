@@ -1,56 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_prac_go_route/screen/1_screen.dart';
-import 'package:flutter_prac_go_route/screen/2_screen.dart';
-import 'package:flutter_prac_go_route/screen/3_screen.dart';
-import 'package:flutter_prac_go_route/screen/error_screen.dart';
-import 'package:flutter_prac_go_route/screen/home_screen.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_prac_go_route/provider/auth_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(_App());
+  runApp(
+    ProviderScope(
+      child: _App(),
+    ),
+  );
 }
 
-class _App extends StatelessWidget {
+class _App extends ConsumerWidget {
   const _App({Key? key}) : super(key: key);
 
-  GoRouter get _router => GoRouter(
-        initialLocation: '/',
-        errorBuilder: (context, state) {
-          return ErrorScreen(
-            error: state.error.toString(),
-          );
-        },
-        routes: [
-          GoRoute(
-            path: '/',
-            builder: (_, state) => HomeScreen(),
-            routes: [
-              GoRoute(
-                path: 'one',
-                builder: (_, state) => OneScreen(),
-                routes: [
-                  GoRoute(
-                    path: 'two',
-                    builder: (_, state) => TwoScreen(),
-                    routes: [
-                      GoRoute(
-                        path: 'three',
-                        name: ThreeScreen.routeName,
-                        builder: (_, state) => ThreeScreen(),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      );
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
     return MaterialApp.router(
-      routerConfig: _router,
+      routerConfig: router,
     );
   }
 }
