@@ -14,6 +14,7 @@ class ProductModel implements IModelWithId {
   final String imgUrl;
   final int price;
   final RestaurantModel restaurant;
+  final String detail;
 
   ProductModel({
     required this.id,
@@ -21,6 +22,7 @@ class ProductModel implements IModelWithId {
     required this.imgUrl,
     required this.price,
     required this.restaurant,
+    required this.detail,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>
