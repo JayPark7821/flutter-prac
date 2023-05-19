@@ -17,7 +17,7 @@ final routerProvider = Provider<GoRouter>(
     );
 
     return GoRouter(
-      initialLocation: '/',
+      initialLocation: '/login',
       errorBuilder: (context, state) {
         return ErrorScreen(
           error: state.error.toString(),
@@ -39,7 +39,8 @@ class AuthNotifier extends ChangeNotifier {
     ref.listen<UserModel?>(
       userProvider,
       (previous, next) {
-        if (previous != null) {
+        print("previous : ${previous} , next : ${next}");
+        if (previous != next) {
           notifyListeners();
         }
       },
@@ -49,16 +50,17 @@ class AuthNotifier extends ChangeNotifier {
   String? _redirectLogic(BuildContext context, GoRouterState state) {
     final user = ref.read(userProvider);
     final loggingIn = state.location == '/login';
-
+    print("isLoggingIn : ${loggingIn.toString()}");
+    print("user : ${user == null}");
     if (user == null) {
-      return loggingIn ? '/' : '/login';
+      return loggingIn ? null : '/login';
     }
 
     if (loggingIn) {
       return '/';
     }
 
-    return '/';
+    return null;
   }
 
   List<GoRoute> get _routes => [
