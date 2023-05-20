@@ -28,6 +28,8 @@ class CustomInterceptor extends Interceptor {
       final token = await storage.read(key: ACCESS_TOKEN_KEY);
       options.headers.addAll({'authorization': 'Bearer $token'});
     }
+    print("${options.baseUrl} ${options.path}");
+    print(options.data);
     return super.onRequest(options, handler);
   }
 

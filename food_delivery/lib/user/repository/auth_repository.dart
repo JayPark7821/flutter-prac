@@ -25,7 +25,7 @@ class AuthRepository {
     required String username,
     required String password,
   }) async {
-    final serialized = DataUtils.pathToUrl('$username:$password');
+    final serialized = DataUtils.plainToBase64('$username:$password');
     final response = await dio.post(
       '$baseUrl/login',
       options: Options(
