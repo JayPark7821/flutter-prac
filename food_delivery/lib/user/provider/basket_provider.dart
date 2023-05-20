@@ -4,6 +4,11 @@ import 'package:food_delivery/user/model/basket_item_model.dart';
 
 import '../../product/model/product_model.dart';
 
+final basketProvider =
+    StateNotifierProvider<BasketProvider, List<BasketItemModel>>((ref) {
+  return BasketProvider();
+});
+
 class BasketProvider extends StateNotifier<List<BasketItemModel>> {
   BasketProvider() : super([]);
 
