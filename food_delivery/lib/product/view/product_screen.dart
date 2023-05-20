@@ -3,6 +3,7 @@ import 'package:food_delivery/common/component/pagination_list_view.dart';
 import 'package:food_delivery/product/component/product_card.dart';
 import 'package:food_delivery/product/provider/product_provider.dart';
 import 'package:food_delivery/restaurant/view/restaurant_detail_screen.dart';
+import 'package:go_router/go_router.dart';
 
 import '../model/product_model.dart';
 
@@ -16,11 +17,9 @@ class ProductScreen extends StatelessWidget {
       itemBuilder: <ProductModel>(_, index, model) {
         return GestureDetector(
             onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) =>
-                      RestaurantDetailScreen(id: model.restaurant.id),
-                ),
+              context.goNamed(
+                RestaurantDetailScreen.routeName,
+                pathParameters: {'rid': model.restaurant.id},
               );
             },
             child: ProductCard.fromProductModel(model: model));
