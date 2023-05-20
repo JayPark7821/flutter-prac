@@ -1,17 +1,15 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/common/const/colors.dart';
-import 'package:food_delivery/common/const/data.dart';
 import 'package:food_delivery/common/layout/default_layout.dart';
-import 'package:food_delivery/common/secure_storage/secure_storage.dart';
+import 'package:food_delivery/user/model/user_model.dart';
+import 'package:food_delivery/user/provider/user_me_provider.dart';
 
 import '../../common/component/custom_text_form_field.dart';
-import '../../common/view/root_tab.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'login';
+
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -24,8 +22,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
-
+    final state = ref.watch(userMeProvider);
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -59,27 +56,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 8.0),
                 ElevatedButton(
-                  onPressed: () async {
-                    final rawString = '$username:$password';
-                    final token = base64.encode(utf8.encode(rawString));
-                    final response = await dio.post(
-                      'http://$ip/auth/login',
-                      options: Options(
-                        headers: {'authorization': 'Basic $token'},
-                      ),
-                    );
-
-                    final refreshToken = response.data['refreshToken'];
-                    final accessToken = response.data['accessToken'];
-                    await ref
-                        .read(secureStorageProvider)
-                        .write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    await ref
-                        .read(secureStorageProvider)
-                        .write(key: ACCESS_TOKEN_KEY, value: accessToken);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const RootTab()));
-                  },
+                  onPressed: state is UserModelLoading
+                      ? null
+                      : () async {
+                          ref
+                              .read(userMeProvider.notifier)
+                              .login(username: username, password: password);
+                          // final rawString = '$username:$password';
+                          // final token = base64.encode(utf8.encode(rawString));
+                          // final response = await dio.post(
+                          //   'http://$ip/auth/login',
+                          //   options: Options(
+                          //     headers: {'authorization': 'Basic $token'},
+                          //   ),
+                          // );
+                          //
+                          // final refreshToken = response.data['refreshToken'];
+                          // final accessToken = response.data['accessToken'];
+                          // await ref
+                          //     .read(secureStorageProvider)
+                          //     .write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                          // await ref
+                          //     .read(secureStorageProvider)
+                          //     .write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                          // Navigator.of(context).push(
+                          //     MaterialPageRoute(builder: (_) => const RootTab()));
+                        },
                   style:
                       ElevatedButton.styleFrom(backgroundColor: PRIMARY_COLOR),
                   child: Text("로그인"),

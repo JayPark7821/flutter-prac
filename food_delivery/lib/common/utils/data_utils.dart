@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import '../const/data.dart';
 
 class DataUtils {
@@ -7,5 +9,9 @@ class DataUtils {
 
   static List<String> listPathsToUrls(List urls) {
     return urls.map((e) => pathToUrl(e)).toList();
+  }
+
+  static String plainToBase64(String plain) {
+    return base64.encode(utf8.encode(plain));
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_delivery/common/view/splash_screen.dart';
+import 'package:food_delivery/common/provider/go_router.dart';
 
 void main() {
   runApp(
@@ -10,16 +10,18 @@ void main() {
   );
 }
 
-class _App extends StatelessWidget {
+class _App extends ConsumerWidget {
   const _App({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-        theme: ThemeData(
-          fontFamily: "NotoSans",
-        ),
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen());
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _router = ref.watch(routerProvider);
+    return MaterialApp.router(
+      theme: ThemeData(
+        fontFamily: "NotoSans",
+      ),
+      debugShowCheckedModeBanner: false,
+      routerConfig: _router,
+    );
   }
 }
