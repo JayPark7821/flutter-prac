@@ -7,7 +7,9 @@ import 'package:food_delivery/product/model/product_model.dart';
 import 'package:food_delivery/restaurant/model/restaurant_detail_model.dart';
 import 'package:food_delivery/restaurant/provider/restaurant_provider.dart';
 import 'package:food_delivery/restaurant/provider/restaurant_rating_provider.dart';
+import 'package:food_delivery/restaurant/view/basket_screen.dart';
 import 'package:food_delivery/user/provider/basket_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:skeletons/skeletons.dart';
 
 import '../../common/layout/default_layout.dart';
@@ -67,7 +69,9 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       title: state.name,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          context.pushNamed(BasketScreen.routeName);
+        },
         backgroundColor: PRIMARY_COLOR,
         child: Badge(
           showBadge: basket.isNotEmpty,
