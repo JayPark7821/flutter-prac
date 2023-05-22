@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_delivery/common/model/cursor_pagination_model.dart';
 import 'package:food_delivery/common/model/model_with_id.dart';
@@ -5,15 +6,44 @@ import 'package:food_delivery/common/model/model_with_id.dart';
 import '../model/pagination_params.dart';
 import '../repository/base_pagination_repository.dart';
 
+class _PaginationInfo {
+  final int fetchCount;
+
+// 추가로 데이터 더 가져오기
+// true - 추가로 데이터 더 가져옴
+// false - 새로고침 (현재 상태를 덮어씌움)
+  final bool fetchMore;
+
+// 강제로 다시 로딩
+// true - CurcorPaginationLoading()
+  final bool forceRefetch;
+
+  _PaginationInfo({
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
+
 class PaginationProvider<T extends IModelWithId,
         U extends IBasePaginationRepository<T>>
     extends StateNotifier<CursorPaginationBase> {
   final U repository;
+  final paginationThrottle = Throttle(
+    Duration(seconds: 1),
+    initialValue: _PaginationInfo(),
+    checkEquality: false,
+  );
 
   PaginationProvider({
     required this.repository,
   }) : super(CursorPaginationLoading()) {
     paginate();
+    paginationThrottle.values.listen(
+      (state) {
+        _throttledPagination(state);
+      },
+    );
   }
 
   Future<void> paginate({
@@ -26,6 +56,14 @@ class PaginationProvider<T extends IModelWithId,
     // true - CurcorPaginationLoading()
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(_PaginationInfo(
+      fetchMore: fetchMore,
+      fetchCount: fetchCount,
+      forceRefetch: forceRefetch,
+    ));
+  }
+
+  _throttledPagination(_PaginationInfo info) async {
     try {
       // final response = await repository.paginate();
       // state = response;
@@ -42,7 +80,7 @@ class PaginationProvider<T extends IModelWithId,
       // 1 hasMore = false 다음 데이터가 없을때
       // 2 로딩중 - fetchMore : true 새로운 데이터를 가져온느 도중에 다시 paginate 실행시
       //          fetchMore : false 다음 데이터를 가져오는도중에 위로 올려서 새로고칭 하는 상황
-      if (state is CursorPaginationModel && !forceRefetch) {
+      if (state is CursorPaginationModel && !info.forceRefetch) {
         final pState = state as CursorPaginationModel;
         if (!pState.meta.hasMore) {
           return;
@@ -52,16 +90,16 @@ class PaginationProvider<T extends IModelWithId,
       final isRefetching = state is CursorPaginationRefetching;
       final isFetchingMore = state is CursorPaginationFetchingMore;
 
-      if (fetchMore && (isLoading || isRefetching || isFetchingMore)) {
+      if (info.fetchMore && (isLoading || isRefetching || isFetchingMore)) {
         return;
       }
 
       PaginationParams paginationParams = PaginationParams(
-        count: fetchCount,
+        count: info.fetchCount,
       );
 
       //fetchMore 데이터를 추가로 더 가져오는 상황
-      if (fetchMore) {
+      if (info.fetchMore) {
         final pState = state as CursorPaginationModel<T>;
         state = CursorPaginationFetchingMore(
           meta: pState.meta,
@@ -75,7 +113,7 @@ class PaginationProvider<T extends IModelWithId,
       } else {
         // 만약 데이터가 있는 상황
         // 기존 데이터를 보존한채 api요청
-        if (state is CursorPaginationModel && !forceRefetch) {
+        if (state is CursorPaginationModel && !info.forceRefetch) {
           final pState = state as CursorPaginationModel<T>;
 
           state = CursorPaginationRefetching<T>(
