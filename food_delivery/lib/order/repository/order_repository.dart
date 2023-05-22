@@ -9,7 +9,7 @@ import '../model/order_model.dart';
 
 part 'order_repository.g.dart';
 
-final OrderRepositoryProvider = Provider<OrderRepository>((ref) {
+final orderRepositoryProvider = Provider<OrderRepository>((ref) {
   final dio = ref.watch(dioProvider);
 
   return OrderRepository(dio, baseUrl: 'http://$ip/order');
