@@ -14,4 +14,8 @@ class DataUtils {
   static String plainToBase64(String plain) {
     return base64.encode(utf8.encode(plain));
   }
+
+  static DateTime stringToDateTime(String value) {
+    return DateTime.parse(value);
+  }
 }

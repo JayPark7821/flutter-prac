@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/common/const/colors.dart';
 
-import '../../common/const/data.dart';
 import '../model/restaurant_detail_model.dart';
 import '../model/restaurant_model.dart';
 
@@ -37,7 +36,7 @@ class RestaurantCard extends StatelessWidget {
   }) {
     return RestaurantCard(
       image: Image.network(
-        'http://$ip${model.thumbUrl}',
+        model.thumbUrl,
         fit: BoxFit.cover,
       ),
       heroKey: model.id,
